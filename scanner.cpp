@@ -16,10 +16,11 @@ using namespace std;
 // RE:   **
 bool word(string s)
 {
-
+	/*
 	int state = 0;
 	int charpos = 0;
 	// replace the following to do the word dfa  **
+	
 	while (s[charpos] != '\0') 
 	{
 		if (state == 0 && s[charpos] == 'a')
@@ -34,15 +35,17 @@ bool word(string s)
 			return(false);
 		charpos++;
 	}//end of while
-
 	// where did I end up????
 	if (state == 2) return(true);  // end in a final state
 	else return(false);
+	*/
+	
+	return true; // just to test scanner function
 }
 
 // PERIOD DFA 
 // Done by: **
-bool period (string s)
+bool period(string s)
 {  // complete this **
 
 	// state?
@@ -58,31 +61,31 @@ bool period (string s)
 
 // ** Update the tokentype to be WORD1, WORD2, PERIOD, ERROR, EOFM, etc.
 enum tokentype {
-	WORD1, WORD2, PERIOD, ERROR, EOFM,
+	WORD1, WORD2, PERIOD, ERROR, EOFM, // standard tokens
 	
-	VERB,        VERBNEG, VERBPAST, VERBPASTNEG, 
+	VERB,        VERBNEG, VERBPAST, VERBPASTNEG, // reserved tokens
 	IS,          WAS,     OBJECT,   SUBJECT, 
 	DESTINATION, PRONOUN, CONNECTOR
-	};
+};
 
 // ** For the display names of tokens - must be in the same order as the tokentype.
 string tokenName[30] = {
-	"WORD1", "WORD2", "PERIOD", "ERROR", "EOFM",
+	"WORD1", "WORD2", "PERIOD", "ERROR", "EOFM", // standard tokens
 	
-	"VERB",        "VERBNEG", "VERBPAST", "VERBPASTNEG", 
+	"VERB",        "VERBNEG", "VERBPAST", "VERBPASTNEG", // reserved tokens
 	"IS",          "WAS",     "OBJECT",   "SUBJECT", 
 	"DESTINATION", "PRONOUN", "CONNECTOR"
-	}; 
+}; 
 
 // ** Need the reservedwords table to be set up here. 
 // ** Do not require any file input for this. Hard code the table.
 // ** a.out should work without any additional files.
-struct reserved{
+const unsigned int total_res_words = 18; // global number of reserved words
+struct reserved{ // associate each reserved word with their respected token type 
 	string st;
 	tokentype tt;
 };
-reserved reservedWords[18] = {
-	
+reserved reservedWords[total_res_words] = { // list of reserved words with token type
 	{"masu", VERB},                {"masen", VERBNEG},      {"mashita", VERBPAST}, 
 	{"masendeshita", VERBPASTNEG}, {"desu", IS},            {"deshita", WAS}, 
 	{"o", OBJECT},                 {"wa", SUBJECT},         {"ni", DESTINATION},      
@@ -113,15 +116,15 @@ int scanner(tokentype& tt, string& w)
 	}
 	//2. Call the token functions (word and period) 
 	//one after another (if-then-else).
-	else if(word(w))
+	else if(word(str))
 	{
 		//3. If it was a word,
 		//check against the reservedwords list.
-		for (int i = 0; i < 19; i++)
+		for (unsigned int i = 0; i < total_res_words; i++)
 		{
 			if(str == reservedWords[i].st)
 			{
-				tt = PRONOUN;
+				tt = reservedWords[i].tt;
 				w = str;
 				return 0; //4. Return the token type & string  (pass by reference)
 			}
@@ -144,7 +147,7 @@ int scanner(tokentype& tt, string& w)
 			return 0; //4. Return the token type & string  (pass by reference)
 		}
 	}
-	else if (period(w))
+	else if (period(str))
 	{
 		tt = PERIOD;
 		w = str;
@@ -155,10 +158,10 @@ int scanner(tokentype& tt, string& w)
 		//Generate a lexical error message if both DFAs failed.
 		cout << "Lexical error: " << str << " is not a valid token" << endl;
 		tt = ERROR; //Let the tokentype be ERROR in that case.
+		w = str;
 		return -1; //4. Return the token type & string  (pass by reference)
 	}
 }//the end of scanner
-
 
 
 // The temporary test driver to just call the scanner repeatedly  
