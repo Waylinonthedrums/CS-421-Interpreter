@@ -1,0 +1,28 @@
+Recursive Descent Parsing requires each rule to have a unique start.
+
+Keep it one rule until it starts to be different
+
+
+1  <story> ::= <s>
+2  <s>     ::= [CONNECTOR] <noun> SUBJECT <verb> <tense> PERIOD 
+3  <s>     ::= [CONNECTOR] <noun> SUBJECT <noun> <be> PERIOD 
+4  <s>     ::= [CONNECTOR] <noun> SUBJECT <noun> DESTINATION <verb> <tense> PERIOD 
+5  <s>     ::= [CONNECTOR] <noun> SUBJECT <noun> OBJECT <verb> <tense> PERIOD 
+6  <s>     ::= [CONNECTOR] <noun> SUBJECT <noun> OBJECT <noun> DESTINATION <verb> <tense> PERIOD
+7  <noun>  ::= WORD1 | PRONOUN 
+8  <verb>  ::= WORD2
+9  <be>    ::= IS | WAS
+10 <tense> ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
+
+
+
+1  <story>         ::= <s> {<s>}  
+2  <s>             ::= [CONNECTOR] <noun> SUBJECT <after_subject>
+3  <after_subject> ::= <verb> <tense> PEROD | <noun> <after_noun>
+4  <after_noun>    ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
+5  <after_object>  ::= <verb> <tense> PERIOD | <noun> DESTINATION <verb> tense> PERIOD
+6  <noun>          ::= WORD1 | PRONOUN 
+7  <verb>          ::= WORD2
+8  <be>            ::= IS | WAS
+9  <tense>         ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
+
