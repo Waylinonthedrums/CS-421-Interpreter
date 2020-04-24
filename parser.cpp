@@ -64,8 +64,8 @@ bool token_available;
 // ** Need syntaxerror1 and syntaxerror2 functions (each takes 2 args)
 //    to display syntax error messages as specified by me.  
 
-// Type of error: **
-// Done by: ** 
+// Type of error: *If the Match Fails*
+// Done by: *Ian Altoveros* 
 void syntaxerror1(tokentype token, string lexeme)
 {
 	/*
@@ -73,9 +73,11 @@ void syntaxerror1(tokentype token, string lexeme)
      "SYNTAX ERROR: expected token_type but found saved_lexeme   and halt. ** exit(1)
 	e.g. SYNTAX ERROR: expected WORD2 but found asa
 	*/
+	
+	cout << "SYNTAX ERROR: Expected " << token << " but found " << lexeme;
 }
-// Type of error: **
-// Done by: ** 
+// Type of error: *Switch Default *
+// Done by: *Ian Altoveros* 
 void syntaxerror2(tokentype token, string lexeme) 
 {
 	/*
@@ -83,12 +85,14 @@ void syntaxerror2(tokentype token, string lexeme)
       "SYNTAX ERROR: unexpected saved_lexeme found in parser function" and halt. ** exit(1)
 	e.g. SYNTAX ERROR: unexpected nai found in tense 
 	*/
+	
+	cout << "SYNTAX Error: unexpected " << lexeme << " found in " << token;
 }
 
 // ** Need the updated match and next_token with 2 global vars
 // saved_token and saved_lexeme
 
-// Purpose: **
+// Purpose: *Updated Next Token*
 // Done by: **
 tokentype next_token()
 {
