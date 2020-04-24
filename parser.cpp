@@ -92,8 +92,15 @@ void syntaxerror2(tokentype token, string lexeme)
 // ** Need the updated match and next_token with 2 global vars
 // saved_token and saved_lexeme
 
-// Purpose: *Updated Next Token*
-// Done by: **
+// Purpose: *Updated Next Token w/ Global Variables*
+// Done by: *Ian Altoveros*
+// global VARIABLES
+
+
+token_type saved_token; // saved token global variable
+string saved_lexme; //saved_lexme global variable
+bool token_available = false; //set flag to false at first 
+
 tokentype next_token()
 {
 	if (!token_available) // if there is no saved token yet
