@@ -111,8 +111,8 @@ tokentype next_token()
 	return saved_token;// return the saved token
 }
 
-// Purpose: **
-// Done by: **
+// Purpose: *Match Function to compare tokens*
+// Done by: *Ian Altoveros*
 bool match(tokentype expected) 
 {
 	if(next_token() != expected)//mismatch has occurred with the next token
@@ -122,6 +122,7 @@ bool match(tokentype expected)
 	}
 	else// match has occurred
 	{
+		cout << "Found a Match! " << tokenName[expected] << endl;
 		token_available = false;// match has occurred
 		return true;// say there was a match
 	}
