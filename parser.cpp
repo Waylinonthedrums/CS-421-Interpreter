@@ -57,9 +57,12 @@ int scanner(tokentype& a, string& w);
 
 // ----- Four Utility Functions and Globals -----------------------------------
 
-tokentype saved_token;
-string saved_lexeme;
-bool token_available;
+// Purpose: *Updated Next Token w/ Global Variables*
+// Done by: *Ian Altoveros*
+// global VARIABLES
+tokentype saved_token; // saved token global variable
+string saved_lexeme; //saved_lexme global variable
+bool token_available = false; //set flag to false at first 
 
 // ** Need syntaxerror1 and syntaxerror2 functions (each takes 2 args)
 //    to display syntax error messages as specified by me.  
@@ -74,7 +77,7 @@ void syntaxerror1(tokentype token, string lexeme)
 	e.g. SYNTAX ERROR: expected WORD2 but found asa
 	*/
 	
-	cout << "SYNTAX ERROR: Expected " << token << " but found " << lexeme;
+	cout << "SYNTAX ERROR: Expected " << token << " but found " << lexeme << endl;
 }
 // Type of error: *Switch Default *
 // Done by: *Ian Altoveros* 
@@ -86,21 +89,14 @@ void syntaxerror2(tokentype token, string lexeme)
 	e.g. SYNTAX ERROR: unexpected nai found in tense 
 	*/
 	
-	cout << "SYNTAX Error: unexpected " << lexeme << " found in " << token;
+	cout << "SYNTAX Error: unexpected " << lexeme << " found in " << token << endl;
 }
 
 // ** Need the updated match and next_token with 2 global vars
 // saved_token and saved_lexeme
 
-// Purpose: *Updated Next Token w/ Global Variables*
+// Purpose: *next_token function*
 // Done by: *Ian Altoveros*
-// global VARIABLES
-
-
-token_type saved_token; // saved token global variable
-string saved_lexme; //saved_lexme global variable
-bool token_available = false; //set flag to false at first 
-
 tokentype next_token()
 {
 	if (!token_available) // if there is no saved token yet
@@ -133,9 +129,6 @@ bool match(tokentype expected)
 // ** Be sure to put the corresponding grammar rule above each function
 // ** Be sure to put the name of the programmer above each function
 
-// Grammar: **
-// Done by: Waylin
-
 //1  <story>         ::= <s> {<s>}  
 //2  <s>             ::= [CONNECTOR] <noun> SUBJECT <after_subject>
 //3  <after_subject> ::= <verb> <tense> PEROD | <noun> <after_noun>
@@ -150,45 +143,72 @@ bool match(tokentype expected)
 //Optional parts are in []   (use if statement)
 //Repeatable (zero or more) parts are in {}   (use while loop)
 
-void tense() // <tense> ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
+ // <tense> ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
+ // Done by: 
+void tense()
 { }
-void be() // <be> ::= IS | WAS
+
+// Grammar: <be> ::= IS | WAS
+// Done by: 
+void be()
 { } 
-void verb() // <verb> ::= WORD2
+
+// Grammar: <verb> ::= WORD2
+// Done by: 
+void verb() 
 { } 
-void noun() // <noun> ::= WORD1 | PRONOUN 
+
+// Grammar: <noun> ::= WORD1 | PRONOUN 
+// Done by: 
+void noun()
 { } 
-void after_object() // <after_object> ::= <verb> <tense> PERIOD | <noun> DESTINATION <verb> tense> PERIOD
+
+// Grammar: <after_object> ::= <verb> <tense> PERIOD | <noun> DESTINATION <verb> tense> PERIOD
+// Done by: 
+void after_object() 
 { }
-void after_noun() // <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
+
+// Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
+// Done by: 
+void after_noun() 
 { }
-void after_subject() // <after_subject> ::= <verb> <tense> PEROD | <noun> <after_noun>
+
+// Grammar: <after_subject> ::= <verb> <tense> PEROD | <noun> <after_noun>
+// Done by: 
+void after_subject() 
 { }
-void s() // <s> ::= [CONNECTOR] <noun> SUBJECT <after_subject>
+
+// Grammar: <s> ::= [CONNECTOR] <noun> SUBJECT <after_subject>
+// Done by: Waylin
+void s()
 { 
-	cout << "Processing <s>" << endl;
-	//match(CONNECTOR) or match(noun)  
-	//match(SUBJECT);
-	//after_subject();
+	cout << "Processing <s> " << saved_lexeme << endl;
+	if(next_token() == CONNECTOR)
+		match(CONNECTOR);
+	noun();
+	match(SUBJECT);
+	after_subject();
 	
-}   
-void story() // <story> ::= <s> {<s>} 
+	token_available = false;// delete this, used just to stop loop for testing
+	
+}
+
+// Grammar: <story> ::= <s> {<s>} 
+// Done by: Waylin
+void story() 
 {
 	cout << "Processing <story>" << endl << endl;
-	string str;
-	fin >> str;
-	
-	while (true)
+	bool loop = true;
+	while (loop)
 	{
-		switch(next_token())
+		switch(saved_token)
 		{
-			case EOFM: // ??
-				return;
+			case EOFM:
+				loop = false;
 			default:
 				s(); 
 		}
 	}
-	
 	cout << endl << "Successfully parsed <story> " << endl;
 	return;
 }
@@ -199,15 +219,15 @@ void story() // <story> ::= <s> {<s>}
 // Done by:  Waylin
 int main()
 {
-	string filename;
-	cout << "Enter the input file name: ";
-	cin >> filename;
-	fin.open(filename.c_str());
+	string filename;//variable to get file from user
+	cout << "Enter the input file name: ";//ask user for file name
+	cin >> filename;//get user input filename
+	fin.open(filename.c_str());//fstream input file data
 
 	story();//** calls the <story> to start parsing
 
 	fin.close();//** closes the input file 
-	return 0;
+	return 0;//returned successfully
 }// end
 //** require no other input files!
 //** syntax error EC requires producing errors.txt of error messages
@@ -436,7 +456,6 @@ bool period (string s)
 int scanner(tokentype& a, string& w)
 {
 	// ** Grab the next word from the file via fin
-       
 	fin >> w;
 
   /* 
@@ -447,13 +466,9 @@ int scanner(tokentype& a, string& w)
      If not reserved, token_type is WORD1 or WORD2.
   4. Return the token type & string  (pass by reference)
   */
-     
-
 
 	int rowCount = sizeof reservedWords/ sizeof reservedWords[0];
 	//cout<<"Row Count"<< rowCount <<endl;
-
-        cout<<"\n";
 
 	if(word(w)) //checking step 2, part 1
 	  {
@@ -462,10 +477,10 @@ int scanner(tokentype& a, string& w)
 		{
 		  if (w == reservedWords[i].string) //checking step 3, part 1
 			{
-			        //cout << "Word is reservedWords.\n";
+			    //cout << "Word is reservedWords.\n";
 				//cout << "token_type: " << reservedWords[i][1] << endl;
 				a = reservedWords[i].tokenT;
-        isReserved = true;
+				isReserved = true;
 				return 0;
 			}
 		}
