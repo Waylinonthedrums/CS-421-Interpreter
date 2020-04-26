@@ -12,7 +12,8 @@ using namespace std;
 // --------- Two DFAs ---------------------------------
 
 // WORD DFA 
-// Done by: Vinh Pham / Waylin Owen
+// Done by: Vinh Pham 
+// RE:   **
 bool word (string s)
 {
   //initialize state variables & char posistion    
@@ -180,7 +181,6 @@ bool word (string s)
 						      
 						    else
 						        { 
-						            cout<<"Token not found!"<<endl;
 							        return false;
 						        } // end else
 						  }//end else
@@ -200,7 +200,7 @@ bool word (string s)
   return false;
 }//end of bool word                                                                                                                                                                                           
 
-
+// ** Done by: Ian Joseph Altoveros
 //fucntion period with string s 
 bool period (string s)
 {  // complete this **
@@ -233,22 +233,13 @@ bool period (string s)
      }
 }
 // ------ Three  Tables -------------------------------------
-
-// TABLES Done by: Ian Joseph Altoveros
+//Done by: Ian Joseph Altoveros
+// -----  Tables -------------------------------------  
 // ** Update the tokentype to be WORD1, WORD2, PERIOD, ERROR, etc.                                                                                                             
-enum tokentype {
-	WORD1, WORD2, PERIOD, ERROR, EOFM, // standard tokens
-	
-	VERB,        VERBNEG, VERBPAST, VERBPASTNEG, // reserved tokens
-	IS,          WAS,     OBJECT,   SUBJECT, 
-	DESTINATION, PRONOUN, CONNECTOR
-};
-
-//word1, word2, in above enum  
-// ** For the display names of tokens - must be in the same order as the tokentype.
-string tokenName[30] = { "WORD1", "WORD2", "PERIOD", "ERROR", "VERB", 
-                        "VERBNEG","VERBPAST","VERBPASTNEG","IS","WAS", 
-                        "OBJECT", "SUBJECT","DESTINATION", "PRONOUN", "CONNECTOR" };
+// Feel free to add a tokentype for the end-of-file marker.                                                                                                                    
+enum tokentype { WORD1, WORD2, PERIOD, ERROR, VERB, VERBNEG, VERBPAST, VERBPASTNEG, IS, WAS, OBJECT, SUBJECT, DESTINATION, PRONOUN, CONNECTOR, EOFM, };
+//word1, word2, in above enum                                                                                                                                                  
+string tokenName[30] = { "WORD1", "WORD2", "PERIOD", "ERROR", "VERB", "VERBNEG","VERBPAST","VERBPASTNEG","IS","WAS", "OBJECT", "SUBJECT","DESTINATION", "PRONOUN", "CONNECTOR", "EOFM", };
 
 // ** Need the reservedwords table to be set up here.                                                                                                                          
 // ** Do not require any file input for this.                                                                                                                                  
@@ -260,17 +251,30 @@ struct reserved
 }
 
 //reserved table including string and tokentypes
-reserved[] = {
-  { "masu",VERB}, {"masen",VERBNEG}, {"mashita",VERBPAST}, {"masendeshita",VERBPASTNEG}, 
-  {"desu",IS}, {"deshita",WAS}, {"o", OBJECT}, {"wa", SUBJECT}, {"ni", DESTINATION},
-  {"watashi",PRONOUN}, {"anata",PRONOUN}, {"kare",PRONOUN}, {"kanojo", PRONOUN},
-  {"sore", PRONOUN}, {"mata",CONNECTOR},{"soshite", CONNECTOR},{"shikashi", CONNECTOR},
-  { "dakara", CONNECTOR}
-};
 
+reserved[] = {
+  { "masu",VERB},
+  {"masen",VERBNEG},
+  {"mashita",VERBPAST},
+  {"masendeshita",VERBPASTNEG},
+  {"desu",IS},
+  {"deshita",WAS},
+  {"o", OBJECT},
+  {"wa", SUBJECT},
+  {"ni", DESTINATION},
+  {"watashi",PRONOUN},
+  {"anata",PRONOUN},
+  {"kare",PRONOUN},
+  {"kanojo", PRONOUN},
+  {"sore", PRONOUN},
+  {"mata",CONNECTOR},
+  {"soshite", CONNECTOR},
+  {"shikashi", CONNECTOR},
+  { "dakara", CONNECTOR},
+  {"eofm", EOFM}
+};
 // ** Do not require any file input for this. Hard code the table.
 // ** a.out should work without any additional files.
-
 
 // ------------ Scaner and Driver ----------------------- 
 
@@ -278,13 +282,14 @@ ifstream fin;  // global stream for reading from the input file
 
 // Scanner processes only one word each time it is called
 // Gives back the token type and the word itself
-// ** Done by: Waylin Owen / Vinh Pham
+// ** Done by: Waylin Owen /Vinh Pham / Ian Joseph Altoveros 
 int scanner(tokentype& a, string& w)
 {
 	// ** Grab the next word from the file via fin
        
+	fin >> w;
+
   /* 
-  // 1. If it is eofm, return right now.  
   2. Call the token functions one after another (if-then-else)
      And generate a lexical error message if both DFAs failed.
      Let the token_type be ERROR in that case.
@@ -292,62 +297,53 @@ int scanner(tokentype& a, string& w)
      If not reserved, token_type is WORD1 or WORD2.
   4. Return the token type & string  (pass by reference)
   */
-    int rowCount;//initialize variables
-  
-    fin >> w; //Grabs the word with fin
+     
 
-    rowCount = sizeof reserved / sizeof reserved[0]; //gets the rowCount
-	
-    cout<<"\n"; 
-    
-    // Checking if the current string is found in the reserved words table, if so assign the correct token type via table
-    //Call the token functions one after another (if-then-else)
-    if(w == "eofm") //If it is eofm, return right now.
-	  { 
-	      //end of the file, do nothing 
-	  }
-    //Call the token functions one after another (if-then-else)
-	if(word(w)) 
+
+	int rowCount = sizeof reserved/ sizeof reserved[0];
+	//cout<<"Row Count"<< rowCount <<endl;
+
+        cout<<"\n";
+
+	if(word(w)) //checking step 2, part 1
 	  {
-	    for (int i = 0; i < rowCount; i++) 
+      bool isReserved = false;
+	    for (int i = 0; i < rowCount; i++)
 		{
-		   //condition when reservedwords
-		  if (w == reserved[i].string) //Make sure WORDs are checked against the reservedwords list
+		  if (w == reserved[i].string) //checking step 3, part 1
 			{
-				a = reserved[i].tokenT; //Sets token to the correct token type
+			        //cout << "Word is reserved.\n";
+				//cout << "token_type: " << reserved[i][1] << endl;
+				a = reserved[i].tokenT;
+        isReserved = true;
 				return 0;
 			}
 		}
 	    
-	    //checking the last letter in the txt
-	    char lastLetter = ' ';
-	      lastLetter = w[(w.length()-1)];
+	if (!isReserved) 
+	{
+			if (w[w.length() - 1] == 'I' || w[w.length() - 1] == 'E')
+				a = WORD2;
+			else
+				a = WORD1;
+		}
+	}
+	else if(period(w)) {
+		a = PERIOD;
+	}
+	else if (w == "eofm") 
+	{
+		a = EOFM;
+	}
+	else {
+			// Generated a lexical error
+			cout << "ERROR!! " << w << " IS NOT VALID!" << endl;
+			a = ERROR;
+	}
 
-	     //Make sure WORDs are checked against the reservedwords list
-        //If not reserved, token_type is WORD1 or WORD2.
-        //If the string was not found in the reserved words table, the string token type will be set to either WORD1 or WORD2
-	    if (lastLetter == 'I' || lastLetter == 'E')
-	      {
-		      a = WORD2;
-	      }
-	    else
-	      {
-		      a = WORD1;
-	      }
-
-	}// end of if(word(w)) condition
-	
-	else if(period(w)) //Checking if char is '.' 
-	  {
-	    a = PERIOD; //Sets token type to period if char is '.'
-	  }
-	else //And generate a lexical error message if both DFAs failed.
-	  {
-	    cout << "LEXICAL ERROR: "<< w <<" is not a valid token \n";
-	    a = ERROR; //Set token type to Error
-	  }
 	return 0;
 }//the end of scanner
+
 
 // The temporary test driver to just call the scanner repeatedly  
 // This will go away after this assignment
