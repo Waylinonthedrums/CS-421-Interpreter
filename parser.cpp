@@ -484,23 +484,25 @@ int scanner(tokentype& a, string& w)
 				return 0;
 			}
 		}
-	    
+	//condition if is not reserved    
 	if (!isReserved) 
-	{
+	{		//condition if is "I" or "E"
 			if (w[w.length() - 1] == 'I' || w[w.length() - 1] == 'E')
-				a = WORD2;
-			else
-				a = WORD1;
+				a = WORD2; //set a to WORD2
+			else //else change
+				a = WORD1; //set a to WORD1
 		}
 	}
-	else if(period(w)) {
-		a = PERIOD;
+	else if(period(w)) //else if words is not reserved PERIOD
+	{
+		a = PERIOD; // set a to PERIOD
 	}
 	else if (w == "eofm") 
 	{
 		a = EOFM;
 	}
-	else {
+	else //else error
+	{
 			// Generated a lexical error
 			cout << "ERROR!! " << w << " IS NOT VALID!" << endl;
 			a = ERROR;
@@ -509,4 +511,3 @@ int scanner(tokentype& a, string& w)
 	return 0;
 }//end of int scanner
 //scanner================================================================
-
