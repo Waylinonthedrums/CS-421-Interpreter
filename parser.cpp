@@ -81,7 +81,7 @@ void syntaxerror1(tokentype token, string lexeme)
 }
 // Type of error: *Switch Default *
 // Done by: *Ian Altoveros* 
-void syntaxerror2(tokentype token, string lexeme) 
+void syntaxerror2(string token, string lexeme) 
 {
 	/*
 	switch default in a parser function => call syntax_error2 and generate
@@ -168,7 +168,7 @@ void tense()
 			break;
 			
 		default:
-			syntaxerror2(saved_lexeme, "tense");
+			syntaxerror2(saved_lexeme,"tense");
   }
 }
 
@@ -187,7 +187,7 @@ void be()
 			break;
 			
 		default:
-			syntaxerror2(saved_lexeme, "be");
+			syntaxerror2(saved_lexeme,"be");
 } 
 }
 
@@ -214,7 +214,7 @@ void noun()
 			break;
       
 		default:
-			syntaxerror2(saved_lexeme, "noun");
+			syntaxerror2(saved_lexeme,"noun");
 	}
 			
 
@@ -246,7 +246,7 @@ void after_object()
 			break;
 			
 		default:
-			syntaxerror2(saved_lexeme, "after_Object");
+			syntaxerror2(saved_lexeme,"after_object");
 	
 	
 }
@@ -278,7 +278,7 @@ void after_noun()
 		break;
 	
 	default:
-		syntaxerror2(saved_lexeme, "after_noun");
+		syntaxerror2(saved_lexeme,"after_noun");
 	
 }
 }
@@ -308,7 +308,7 @@ void after_subject()
         break;
         
         default:
-            syntaxerror2(saved_lexeme, "after_subject");   
+            syntaxerror2(saved_lexeme,"after_subject");
       }
 }
 
