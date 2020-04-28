@@ -323,7 +323,7 @@ void s()
 	match(SUBJECT);
 	after_subject();
 	
-	token_available = false;// delete this, used just to stop loop for testing
+	//token_available = false;// delete this, used just to stop loop for testing
 	
 }
 
@@ -339,6 +339,7 @@ void story()
 		{
 			case EOFM:
 				loop = false;
+				break;
 			default:
 				s(); 
 		}
