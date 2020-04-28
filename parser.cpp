@@ -154,14 +154,32 @@ void be()
 { } 
 
 // Grammar: <verb> ::= WORD2
-// Done by: 
+// Done by:Ian Altoveros 
 void verb() 
-{ } 
+{
+	match(WORD2);
+}
+
 
 // Grammar: <noun> ::= WORD1 | PRONOUN 
-// Done by: 
+// Done by: Ian Altoveros
 void noun()
-{ } 
+{ 
+	switch(next_token())
+	{
+		case WORD1:
+			match(WORD1);
+			break;
+		case PRONOUN
+			match(PRONOUN);
+			break;
+		default:
+			return;
+	}
+			
+
+	
+} 
 
 // Grammar: <after_object> ::= <verb> <tense> PERIOD | <noun> DESTINATION <verb> tense> PERIOD
 // Done by: 
