@@ -76,7 +76,8 @@ void syntaxerror1(tokentype token, string lexeme)
      "SYNTAX ERROR: expected token_type but found saved_lexeme   and halt. ** exit(1)
 	e.g. SYNTAX ERROR: expected WORD2 but found asa
 	*/
-	
+	saved_token = ERROR;
+        saved_lexeme = "ERROR";
 	cout << "SYNTAX ERROR: Expected " << token << " but found " << lexeme << endl;
 }
 // Type of error: *Switch Default *
@@ -88,7 +89,8 @@ void syntaxerror2(string token, string lexeme)
       "SYNTAX ERROR: unexpected saved_lexeme found in parser function" and halt. ** exit(1)
 	e.g. SYNTAX ERROR: unexpected nai found in tense 
 	*/
-	
+	saved_lexeme = "ERROR";
+        saved_token = ERROR;
 	cout << "SYNTAX Error: unexpected " << lexeme << " found in " << token << endl;
 }
 
