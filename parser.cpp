@@ -151,12 +151,16 @@ void tense()
 	{
 		case VERBPAST:
 			match(VERBPAST);
+			break;
 		case VERBPASTNEG:
 			match(VERBPASTNEG);
+			break;
 		case VERB:
 			match(VERB);
+			break;
 		case VERBNEG:
 			match(VERB);
+			break;
 		default:
 			break;
 }
@@ -213,7 +217,7 @@ void after_object()
 void after_noun() 
 { }
 
-// Grammar: <after_subject> ::= <verb> <tense> PEROD | <noun> <after_noun>
+// Grammar: <after_subject> ::= <verb> <tense> PEROID | <noun> <after_noun>
 // Done by: 
 void after_subject() 
 { }
