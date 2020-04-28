@@ -299,12 +299,12 @@ void after_subject()
         
         case WORD1:
         noun();
-        afterNoun();
+        afte_noun();
         break;
       
         case PRONOUN:
         noun();
-        afterNoun();
+        after_noun();
         break;
         
         default:
