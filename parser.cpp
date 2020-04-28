@@ -166,7 +166,7 @@ void tense()
 			break;
 			
 		default:
-			break;
+			return;
 }
 
 // Grammar: <be> ::= IS | WAS
@@ -184,7 +184,7 @@ void be()
 			break;
 			
 		default:
-			break;
+			return;
 } 
 
 // Grammar: <verb> ::= WORD2
@@ -238,7 +238,7 @@ void after_object()
 			break;
 			
 		default:
-			break;
+			return;
 	
 	
 }
