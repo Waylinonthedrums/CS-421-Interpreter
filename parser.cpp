@@ -164,7 +164,7 @@ void tense()
 			break;
 			
 		case VERBNEG: //if case is VERBNEG
-			match(VERB); //matches VERBNEG
+			match(VERBNEG); //matches VERBNEG
 			break;
 			
 		default:
