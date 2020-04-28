@@ -223,7 +223,34 @@ void noun()
 
 
 
-
+// Grammar: <after_object> ::= <verb> <tense> PERIOD | <noun> DESTINATION <verb> tense> PERIOD
+// Done by: Ian Altoveros
+void after_object() 
+{
+	switch(next_token())
+	{
+		case WORD2:
+			verb();
+			tense();
+			match(PERIOD);
+			break;
+			
+		case WORD1:
+			
+		case PRONOUN:
+			noun();
+			match(DESTINATION);
+			verb();
+			tense();
+			match(PERIOD);
+			break;
+			
+		default:
+			return;
+	
+	
+}
+}
 
 // Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
 // Done by: Ian Altoveros
@@ -256,34 +283,7 @@ void after_noun()
 }
 }
 
-// Grammar: <after_object> ::= <verb> <tense> PERIOD | <noun> DESTINATION <verb> tense> PERIOD
-// Done by: Ian Altoveros
-void after_object() 
-{
-	switch(next_token())
-	{
-		case WORD2:
-			verb();
-			tense();
-			match(PERIOD);
-			break;
-			
-		case WORD1:
-			
-		case PRONOUN:
-			noun();
-			match(DESTINATION);
-			verb();
-			tense();
-			match(PERIOD);
-			break;
-			
-		default:
-			return;
-	
-	
-}
-}
+
 
 // Grammar: <after_subject> ::= <verb> <tense> PEROID | <noun> <after_noun>
 // Done by: 
@@ -619,9 +619,11 @@ int scanner(tokentype& a, string& w)
 			cout << "ERROR!! " << w << " IS NOT VALID!" << endl;
 			a = ERROR;
 	}
+  return 0;
 }
 
-	return 0;
-}//end of int scanner
+
+
+//end of int scanner
 
 //scanner================================================================
