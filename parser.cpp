@@ -168,7 +168,7 @@ void tense()
 			break;
 			
 		default:
-			return;
+			syntaxerror2(saved_lexeme, "tense");
   }
 }
 
@@ -187,7 +187,7 @@ void be()
 			break;
 			
 		default:
-			return;
+			syntaxerror2(saved_lexeme, "be");
 } 
 }
 
@@ -214,7 +214,7 @@ void noun()
 			break;
       
 		default:
-			return;
+			syntaxerror2(saved_lexeme, "noun");
 	}
 			
 
@@ -246,7 +246,7 @@ void after_object()
 			break;
 			
 		default:
-			return;
+			syntaxerror2(saved_lexeme, "after_Object");
 	
 	
 }
@@ -278,7 +278,7 @@ void after_noun()
 		break;
 	
 	default:
-		return;
+		syntaxerror2(saved_lexeme, "after_noun");
 	
 }
 }
@@ -308,7 +308,7 @@ void after_subject()
         break;
         
         default:
-            return;   
+            syntaxerror2(saved_lexeme, "after_subject");   
       }
 }
 
