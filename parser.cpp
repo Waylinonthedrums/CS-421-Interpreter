@@ -151,20 +151,20 @@ void tense()
 {
 	switch(next_token())
 	{
-		case VERBPAST:
-			match(VERBPAST);
+		case VERBPAST: //if case is VERBPAST
+			match(VERBPAST); //matches VERBPAST
 			break;
 			
-		case VERBPASTNEG:
-			match(VERBPASTNEG);
+		case VERBPASTNEG: //if case is VERBPAST
+			match(VERBPASTNEG); //matches VERBPAST
 			break;
 			
-		case VERB:
-			match(VERB);
+		case VERB: //if case is VERBPAST
+			match(VERB); //matches VERBPAST
 			break;
 			
-		case VERBNEG:
-			match(VERB);
+		case VERBNEG: //if case is VERBPAST
+			match(VERB); //matches VERBPAST
 			break;
 			
 		default:
@@ -178,12 +178,12 @@ void be()
 {
 	switch(next_token())
 	{
-		case IS:
-			match(IS);
+		case IS: //if case is VERBPAST
+			match(IS); //matches VERBPAST
 			break;
 			
-		case WAS:
-			match(WAS);
+		case WAS: //if case is VERBPAST
+			match(WAS); //matches VERBPAST
 			break;
 			
 		default:
@@ -195,7 +195,7 @@ void be()
 // Done by:Ian Altoveros 
 void verb() 
 {
-	match(WORD2);
+	match(WORD2); //matches VERBPAST
 }
 
 
@@ -205,12 +205,12 @@ void noun()
 { 
 	switch(next_token())
 	{
-		case WORD1:
-			match(WORD1);
+		case WORD1: //if case is VERBPAST
+			match(WORD1); //matches VERBPAST
 			break;
       
-    case PRONOUN:
-			match(PRONOUN);
+    		case PRONOUN: //if case is VERBPAST
+			match(PRONOUN); //matches VERBPAST
 			break;
       
 		default:
@@ -229,20 +229,20 @@ void after_object()
 {
 	switch(next_token())
 	{
-		case WORD2:
-			verb();
-			tense();
-			match(PERIOD);
+		case WORD2: //if case is VERBPAST
+			verb(); 
+			tense(); 
+			match(PERIOD); //matches VERBPAST
 			break;
 			
-		case WORD1:
+		case WORD1: //if case is VERBPAST
 			
 		case PRONOUN:
 			noun();
-			match(DESTINATION);
+			match(DESTINATION); //matches VERBPAST
 			verb();
 			tense();
-			match(PERIOD);
+			match(PERIOD); //matches VERBPAST
 			break;
 			
 		default:
@@ -259,21 +259,21 @@ void after_noun()
   switch(next_token())
   {
   
-	case WAS:
+	case WAS: //if case is VERBPAST
 	case IS:
 		be();
-		match(PERIOD);
+		match(PERIOD); //matches VERBPAST
 		break;
 	
-	case DESTINATION:
-		match(DESTINATION);
+	case DESTINATION: //if case is VERBPAST
+		match(DESTINATION); //matches VERBPAST
 		verb();
 		tense();
-		match(PERIOD);
+		match(PERIOD); //matches VERBPAST
 		break;
 	
-	case OBJECT:
-		match(OBJECT);
+	case OBJECT: //if case is VERBPAST
+		match(OBJECT); //matches VERBPAST
 		after_object();
 		break;
 	
@@ -291,20 +291,20 @@ void after_subject()
 { 
     switch(next_token())                                            
       {
-        case WORD2:
+        case WORD2: //if case is VERBPAST
         verb();
         tense();
-        match(PERIOD);
+        match(PERIOD); //matches VERBPAST
         break;
         
-        case WORD1:
-        noun();
-        afte_noun();
-        break;
-      
-        case PRONOUN:
+        case WORD1: //if case is VERBPAST
         noun();
         after_noun();
+        break;
+      
+        case PRONOUN: //if case is VERBPAST
+        noun();
+        after_noun(); //matches VERBPAST
         break;
         
         default:
