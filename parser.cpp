@@ -76,9 +76,10 @@ void syntaxerror1(tokentype token, string lexeme)
      "SYNTAX ERROR: expected token_type but found saved_lexeme   and halt. ** exit(1)
 	e.g. SYNTAX ERROR: expected WORD2 but found asa
 	*/
-	saved_token = ERROR;
-        saved_lexeme = "ERROR";
+        saved_token = ERROR;
+	saved_lexeme = "ERROR";
 	cout << "SYNTAX ERROR: Expected " << token << " but found " << lexeme << endl;
+
 }
 // Type of error: *Switch Default *
 // Done by: *Ian Altoveros* 
@@ -89,9 +90,10 @@ void syntaxerror2(string token, string lexeme)
       "SYNTAX ERROR: unexpected saved_lexeme found in parser function" and halt. ** exit(1)
 	e.g. SYNTAX ERROR: unexpected nai found in tense 
 	*/
-	saved_lexeme = "ERROR";
-        saved_token = ERROR;
+        saved_lexeme = "ERROR";
+  	saved_token = ERROR;
 	cout << "SYNTAX Error: unexpected " << lexeme << " found in " << token << endl;
+
 }
 
 // ** Need the updated match and next_token with 2 global vars
@@ -104,6 +106,7 @@ tokentype next_token()
 	if (!token_available) // if there is no saved token yet
 	{
 		scanner(saved_token, saved_lexeme); // call scanner to grab a new token
+		cout<<"Scanner called using word: "<< saved_lexeme <<endl;
 		token_available = true; // mark that fact that you have saved it
 	}
 	return saved_token;// return the saved token
@@ -151,6 +154,8 @@ bool match(tokentype expected)
 
 void tense()
 {
+  cout<<"Processing <tense>"<<endl;
+
 	switch(next_token())
 	{
 		case VERBPAST: //if case is VERBPAST
@@ -178,6 +183,8 @@ void tense()
 // Done by: Ian Altoveros
 void be()
 {
+  cout<<"Processing <be>"<<endl;
+
 	switch(next_token())
 	{
 		case IS: //if case is "IS"
@@ -194,17 +201,28 @@ void be()
 }
 
 // Grammar: <verb> ::= WORD2
-// Done by:Ian Altoveros 
+// Done by:Vinh Pham 
 void verb() 
 {
-	match(WORD2); //matches VERB
-}
+  cout<<"Processing <verb>"<<endl;
+  //match(WORD2); //matches VERB
+  switch(next_token())                                                              
+    {
+    case  WORD2: //condition case
+      match(WORD2); //match WORD2
+      break;
+    default: 
+      syntaxerror2(saved_lexeme, "verb");  
+    }
+} //end of verb function
 
 
 // Grammar: <noun> ::= WORD1 | PRONOUN 
 // Done by: Ian Altoveros
 void noun()
 { 
+  cout<<"Processing <noun>"<<endl;
+
 	switch(next_token())
 	{
 		case WORD1: //if case is WORD1
@@ -217,11 +235,8 @@ void noun()
       
 		default:
 			syntaxerror2(saved_lexeme,"noun");
-	}
-			
-
-	
-} 
+	}	
+} // end of noun function
 
 
 
@@ -229,6 +244,8 @@ void noun()
 // Done by: Ian Altoveros
 void after_object() 
 {
+  cout<<"Processing <afterObject>"<<endl;
+
 	switch(next_token())
 	{
 		case WORD2: //if case is WORD2
@@ -249,15 +266,15 @@ void after_object()
 			
 		default:
 			syntaxerror2(saved_lexeme,"after_object");
-	
-	
-}
+	}
 }
 
 // Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
 // Done by: Ian Altoveros
 void after_noun() 
 {
+  cout<<"Processing <afterNoun>"<<endl;
+
   switch(next_token())
   {
   
@@ -290,7 +307,9 @@ void after_noun()
 // Grammar: <after_subject> ::= <verb> <tense> PEROID | <noun> <after_noun>
 // Done by: Vinh Pham
 void after_subject() 
-{ 
+{
+  cout<<"Processing <afterSubject>"<<endl;
+
     switch(next_token())                                            
       {
         case WORD2: //if case is WORD2
@@ -318,12 +337,29 @@ void after_subject()
 // Done by: Waylin
 void s()
 { 
+  /*
 	cout << "Processing <s> " << saved_lexeme << endl;
 	if(next_token() == CONNECTOR)
 		match(CONNECTOR);
 	noun();
 	match(SUBJECT);
 	after_subject();
+  */
+
+  //cout<<"Processing <s>"<<endl;
+	next_token();
+	if(saved_lexeme != "eofm") //condition if saved_lexeme not match
+	  {
+	    cout<<"Processing <s>"<<endl; //processing s
+	    if(next_token() == CONNECTOR) // if token match with the CONNECTOR
+	      {
+		match(CONNECTOR); //match connector
+	      }
+  
+	    noun(); //call noun
+	    match(SUBJECT); //match subject
+	    after_subject(); 
+	  }
 	
 	//token_available = false;// delete this, used just to stop loop for testing
 	
@@ -335,10 +371,13 @@ void story()
 {
 	cout << "Processing <story>" << endl << endl;
 	bool loop = true;
+	/*
 	while (loop)
 	{
 		switch(saved_token)
-		{
+		{ 
+		        case ERROR:
+			    return;
 			case EOFM:
 				loop = false;
 				break;
@@ -346,8 +385,14 @@ void story()
 				s(); 
 		}
 	}
+	*/	
+
+	s(); //calling s() function
+	while(loop && (saved_lexeme != "eofm"))
+	  {
+	    s();
+	  }
 	cout << endl << "Successfully parsed <story> " << endl;
-	return;
 }
 
 
