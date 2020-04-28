@@ -149,9 +149,18 @@ void tense()
 { }
 
 // Grammar: <be> ::= IS | WAS
-// Done by: 
+// Done by: Ian Altoveros
 void be()
-{ } 
+{
+	switch(next_token())
+	{
+		case IS:
+			match(IS);
+		case WAS:
+			match(was);
+		default:
+			break;
+} 
 
 // Grammar: <verb> ::= WORD2
 // Done by:Ian Altoveros 
