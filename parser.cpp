@@ -286,9 +286,31 @@ void after_noun()
 
 
 // Grammar: <after_subject> ::= <verb> <tense> PEROID | <noun> <after_noun>
-// Done by: 
+// Done by: Vinh Pham
 void after_subject() 
-{ }
+{ 
+    switch(next_token())  // look ahead at next token                                          
+      {
+        case WORD2:
+        verb();
+        tense();
+        match(PERIOD);
+        break;
+        
+        case WORD1:
+        noun();
+        afterNoun();
+        break;
+      
+        case PRONOUN:
+        noun();
+        afterNoun();
+        break;
+        
+        default:
+            return;   
+      }
+}
 
 // Grammar: <s> ::= [CONNECTOR] <noun> SUBJECT <after_subject>
 // Done by: Waylin
