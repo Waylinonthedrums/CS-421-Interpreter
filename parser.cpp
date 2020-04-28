@@ -216,9 +216,32 @@ void noun()
 } 
 
 // Grammar: <after_object> ::= <verb> <tense> PERIOD | <noun> DESTINATION <verb> tense> PERIOD
-// Done by: 
+// Done by: Ian Altoveros
 void after_object() 
-{ }
+{
+	switch(next_token())
+	{
+		case WORD2:
+			verb();
+			tense();
+			match(PERIOD);
+			break;
+			
+		case WORD1:
+			
+		case PRONOUN:
+			noun();
+			match(DESTINATION);
+			verb();
+			tense();
+			match(PERIOD);
+			break;
+			
+		default:
+			break;
+	
+	
+}
 
 // Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
 // Done by: 
