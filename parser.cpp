@@ -152,15 +152,19 @@ void tense()
 		case VERBPAST:
 			match(VERBPAST);
 			break;
+			
 		case VERBPASTNEG:
 			match(VERBPASTNEG);
 			break;
+			
 		case VERB:
 			match(VERB);
 			break;
+			
 		case VERBNEG:
 			match(VERB);
 			break;
+			
 		default:
 			break;
 }
@@ -173,8 +177,12 @@ void be()
 	{
 		case IS:
 			match(IS);
+			break;
+			
 		case WAS:
 			match(was);
+			break;
+			
 		default:
 			break;
 } 
