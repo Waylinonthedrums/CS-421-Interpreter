@@ -244,9 +244,36 @@ void after_object()
 }
 
 // Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
-// Done by: 
+// Done by: Ian Altoveros
 void after_noun() 
-{ }
+{
+	case BE:
+		be();
+		match(PERIOD);
+		break;
+	
+	case WAS:
+	case IS:
+		be();
+		match(PERIOD);
+		break;
+	
+	case DESTINATION:
+		match(DESTINATION);
+		verb();
+		tense();
+		match(PERIOD);
+		break;
+	
+	case OBJECT:
+		match(OBJECT);
+		afterObject();
+		break;
+	
+	default:
+		return;
+	
+}
 
 // Grammar: <after_subject> ::= <verb> <tense> PEROID | <noun> <after_noun>
 // Done by: 
