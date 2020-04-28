@@ -124,6 +124,7 @@ bool match(tokentype expected)
 	}
 }
 
+
 // ----- RDP functions - one per non-term --------------------------------
 // ** Make each non-terminal into a function here
 // ** Be sure to put the corresponding grammar rule above each function
@@ -145,6 +146,7 @@ bool match(tokentype expected)
 
  // <tense> ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
  // Done by: Ian Altoveros
+
 void tense()
 {
 	switch(next_token())
@@ -167,6 +169,7 @@ void tense()
 			
 		default:
 			return;
+  }
 }
 
 // Grammar: <be> ::= IS | WAS
@@ -180,12 +183,13 @@ void be()
 			break;
 			
 		case WAS:
-			match(was);
+			match(WAS);
 			break;
 			
 		default:
 			return;
 } 
+}
 
 // Grammar: <verb> ::= WORD2
 // Done by:Ian Altoveros 
@@ -204,9 +208,11 @@ void noun()
 		case WORD1:
 			match(WORD1);
 			break;
-		case PRONOUN
+      
+    case PRONOUN:
 			match(PRONOUN);
 			break;
+      
 		default:
 			return;
 	}
@@ -214,6 +220,41 @@ void noun()
 
 	
 } 
+
+
+
+
+
+// Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
+// Done by: Ian Altoveros
+void after_noun() 
+{
+  switch(next_token())
+  {
+  
+	case WAS:
+	case IS:
+		be();
+		match(PERIOD);
+		break;
+	
+	case DESTINATION:
+		match(DESTINATION);
+		verb();
+		tense();
+		match(PERIOD);
+		break;
+	
+	case OBJECT:
+		match(OBJECT);
+		after_object();
+		break;
+	
+	default:
+		return;
+	
+}
+}
 
 // Grammar: <after_object> ::= <verb> <tense> PERIOD | <noun> DESTINATION <verb> tense> PERIOD
 // Done by: Ian Altoveros
@@ -242,37 +283,6 @@ void after_object()
 	
 	
 }
-
-// Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
-// Done by: Ian Altoveros
-void after_noun() 
-{
-	case BE:
-		be();
-		match(PERIOD);
-		break;
-	
-	case WAS:
-	case IS:
-		be();
-		match(PERIOD);
-		break;
-	
-	case DESTINATION:
-		match(DESTINATION);
-		verb();
-		tense();
-		match(PERIOD);
-		break;
-	
-	case OBJECT:
-		match(OBJECT);
-		afterObject();
-		break;
-	
-	default:
-		return;
-	
 }
 
 // Grammar: <after_subject> ::= <verb> <tense> PEROID | <noun> <after_noun>
@@ -609,7 +619,9 @@ int scanner(tokentype& a, string& w)
 			cout << "ERROR!! " << w << " IS NOT VALID!" << endl;
 			a = ERROR;
 	}
+}
 
 	return 0;
 }//end of int scanner
+
 //scanner================================================================
