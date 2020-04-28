@@ -289,7 +289,7 @@ void after_noun()
 // Done by: Vinh Pham
 void after_subject() 
 { 
-    switch(next_token())  // look ahead at next token                                          
+    switch(next_token())                                            
       {
         case WORD2:
         verb();
