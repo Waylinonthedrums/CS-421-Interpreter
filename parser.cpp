@@ -144,9 +144,22 @@ bool match(tokentype expected)
 //Repeatable (zero or more) parts are in {}   (use while loop)
 
  // <tense> ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
- // Done by: 
+ // Done by: Ian Altoveros
 void tense()
-{ }
+{
+	switch(next_token())
+	{
+		case VERBPAST:
+			match(VERBPAST);
+		case VERBPASTNEG:
+			match(VERBPASTNEG);
+		case VERB:
+			match(VERB);
+		case VERBNEG:
+			match(VERB);
+		default:
+			break;
+}
 
 // Grammar: <be> ::= IS | WAS
 // Done by: Ian Altoveros
