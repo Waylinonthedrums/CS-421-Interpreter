@@ -91,7 +91,7 @@ void syntaxerror2(tokentype token, string lexeme)
 	e.g. SYNTAX ERROR: unexpected nai found in tense 
 	*/
 	
-	cout << "SYNTAX ERROR: unexpected " << saved_lexeme << " found in " << lexeme << endl;
+	cout << "SYNTAX ERROR: Unexpected " << saved_lexeme << " found in " << lexeme << endl;
 	saved_token = ERROR;
 	saved_lexeme = "ERROR";
 }
@@ -118,7 +118,7 @@ bool match(tokentype expected)
 {
 	if(next_token() != expected)//mismatch has occurred with the next token
 	{
-		syntaxerror1(saved_token, saved_lexeme);//calls a syntax error function here to generate a syntax error message here and do recovery
+		syntaxerror1(expected, saved_lexeme);//calls a syntax error function here to generate a syntax error message here and do recovery
 		return false;
 	}
 	else// match has occurred
@@ -149,9 +149,8 @@ bool match(tokentype expected)
 //Optional parts are in []   (use if statement)
 //Repeatable (zero or more) parts are in {}   (use while loop)
 
- // <tense> ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
- // Done by: Ian Altoveros
-
+// <tense> ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
+// Done by: Ian Altoveros
 void tense()
 {
 	cout<<"Processing <tense>"<<endl;
@@ -326,29 +325,27 @@ void after_noun()
 	}
 }
 
-
-
 // Grammar: <after_subject> ::= <verb> <tense> PEROID | <noun> <after_noun>
 // Done by: Vinh Pham
 void after_subject() 
-{ 
+{
     switch(next_token())  // look ahead at next token                                          
       {
         case WORD2: //if case is WORD2
-        verb();
-        tense();
-        match(PERIOD); //matches PERIOD
-        break;
+			verb();
+			tense();
+			match(PERIOD); //matches PERIOD
+			break;
         
         case WORD1: //if case is WORD1
-        noun();
-        after_noun();
-        break;
-      
+			noun();
+			after_noun();
+			break;
+		  
         case PRONOUN: //if case is PRONOUN
-        noun();
-        after_noun();
-        break;
+			noun();
+			after_noun();
+			break;
 		
 		case ERROR: //if case is ERROR
 			return;		
@@ -364,9 +361,17 @@ void s()
 { 
 	cout << "Processing <s> " << saved_lexeme << endl;
 	
+	if(saved_token == ERROR) // if first word is ERROR, return
+		{
+			syntaxerror2(saved_token, "s");  // throw an error message
+			return;
+		}
+		
 	if(saved_token == CONNECTOR) // optional CONNECTOR
 		match(CONNECTOR); //matches CONNECTOR
 	noun();
+	if(saved_token == ERROR) // checks if we got ERROR in noun() before matching subject
+		return;
 	match(SUBJECT); //matches SUBJECT
 	after_subject();
 }
@@ -377,23 +382,14 @@ void story()
 {
 	cout << "Processing <story>" << endl << endl;
 	
-	bool loop = true;
-	while (loop)
+	while (true) 
 	{
-		if(saved_token == ERROR) // if ERROR was found, stop
-		{
-			loop = false; // end loop
-			return;
-		}
-		switch(next_token()) 
-		{
-			case EOFM: // end of file
-				loop = false; // end loop
-				break;
-				
-			default: // no errors found and not at the end yet
-				s(); // process next sentence
-		}
+		if(saved_token == ERROR) // if ERROR was found at last previous iteration, stop
+			return; // unsuccessful parsing
+		if(next_token() == EOFM) // get first word in sentence, if EOFM was found, stop
+			break; // successful parsing
+		else
+			s();
 	}
 	
 	cout << endl << "Successfully parsed <story> " << endl;
