@@ -415,7 +415,6 @@ void after_noun()
 		case WAS: //if case is "WAS" OR "IS"
 			be();
 			gen("DESCRIPTION");
-			tense();
 			gen("TENSE");
 			match(PERIOD); //matches PERIOD
 			break;
@@ -423,7 +422,6 @@ void after_noun()
 		case IS:
 			be();
 			gen("DESCRIPTION");
-			tense();
 			gen("TENSE");
 			match(PERIOD); //matches PERIOD
 			break;
