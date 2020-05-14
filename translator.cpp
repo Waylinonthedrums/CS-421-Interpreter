@@ -352,7 +352,8 @@ void noun()
 	}
 } 
 
-// <after_object> ::= <verb> <tense> PERIOD | <noun> DESTINATION <verb> <tense> PERIOD
+// <after_object>  ::= <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)# PERIOD | <noun> #getEword# DESTINATION #gen(“TO”)# <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)# PERIOD
+// Done by: Ian Altoveros
 void after_object() 
 {
 	cout<<"Processing <afterObject>"<<endl;
@@ -361,26 +362,37 @@ void after_object()
 	{
 		case WORD2: //if case is WORD2
 			verb();
+			getEWord();
+			gen("ACTION");
 			tense();
+			gen("TENSE");
 			match(PERIOD); //matches PERIOD
 			break;
 			
 		case WORD1: //if case is WORD1
 			noun();
+			getEWord();
 			match(DESTINATION); //matches DESTINATION
+			gen("TO");
 			verb();
+			getEWord();
+			gen("ACTION");
 			tense();
+			gen("TENSE");
 			match(PERIOD); //matches PERIOD
-			gen("TO"); //
 			break;
 			
 		case PRONOUN:
 			noun();
+			getEWord();
 			match(DESTINATION); //matches DESTINATION
+			gen("TO");
 			verb();
+			getEWord();
+			gen("ACTION");
 			tense();
+			gen("TENSE");
 			match(PERIOD); //matches PERIOD
-			gen("TO"); // 
 			break;
 			
 		case ERROR: //if case is ERROR
@@ -391,7 +403,8 @@ void after_object()
 	}
 }
 
-// <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <after_object>
+// <after_noun> ::= <be> #gen(DESCRIPTION)# #gen(“TENSE”)# PERIOD | DESTINATION #gen(“TO”)# <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)# PERIOD | OBJECT #gen(“OBJECT”)# <after_object>
+// Done by: Ian Altoveros
 void after_noun() 
 {
 	cout<<"Processing <afterNoun>"<<endl;
@@ -401,26 +414,35 @@ void after_noun()
   
 		case WAS: //if case is "WAS" OR "IS"
 			be();
+			gen("DESCRIPTION");
+			tense();
+			gen("TENSE");
 			match(PERIOD); //matches PERIOD
 			break;
 			
 		case IS:
 			be();
+			gen("DESCRIPTION");
+			tense();
+			gen("TENSE");
 			match(PERIOD); //matches PERIOD
 			break;
 		
 		case DESTINATION: //if case is DESTINATION
 			match(DESTINATION); //matches DESTINATION
+			gen("TO");
 			verb();
+			getEWord();
+			gen("ACTION");
 			tense();
 			match(PERIOD); //matches PERIOD
-			gen("TO");
 			break;
 		
 		case OBJECT: //if case is OBJECT
 			match(OBJECT); //matches OBJECT
-			after_object();
 			gen("OBJECT"); 
+			after_object();
+			
 			break;
 			
 		case ERROR: //if case is ERROR
@@ -431,24 +453,30 @@ void after_noun()
 	}
 }
 
-// <after_subject> ::= <verb> <tense> PEROID | <noun> <after_noun>
+// <after subject> ::= <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)# PEROID | <noun> #getEword# <after noun>
+// Done by: Ian Altoveros
 void after_subject() 
 {
     switch(next_token())  // look ahead at next token                                          
       {
         case WORD2: //if case is WORD2
 			verb();
+		    	getEword();
+		    	gen("ACTION");
 			tense();
+		    	gen("TENSE");
 			match(PERIOD); //matches PERIOD
 			break;
         
         case WORD1: //if case is WORD1
 			noun();
+		    	getEWord();
 			after_noun();
 			break;
 		  
         case PRONOUN: //if case is PRONOUN
 			noun();
+		    	getEWord();
 			after_noun();
 			break;
 		
@@ -460,7 +488,8 @@ void after_subject()
       }
 }
 
-// <s> ::= [CONNECTOR] <noun> SUBJECT <after_subject>
+// <s> ::= [CONNECTOR #getEword# #gen(“CONNECTOR”)#] <noun> #getEword# SUBJECT #gen(“ACTOR”)# <after subject>
+// Done By: Ian Altoveros
 void s()
 { 
 	cout << "Processing <s> " << saved_lexeme << endl;
@@ -472,11 +501,17 @@ void s()
 		}
 		
 	if(saved_token == CONNECTOR) // optional CONNECTOR
+		{
 		match(CONNECTOR); //matches CONNECTOR
+		getEWord();
+		gen("CONNECTOR");
+		}
 	noun();
+	getEWord();
 	if(saved_token == ERROR) // checks if we got ERROR in noun() before matching subject
 		return;
 	match(SUBJECT); //matches SUBJECT
+	gen("ACTOR");
 	after_subject();
 }
 
