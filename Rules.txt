@@ -1,7 +1,4 @@
-Recursive Descent Parsing requires each rule to have a unique start.
-
-Keep it one rule until it starts to be different
-
+Grammar rules
 
 1  <story> ::= <s>
 2  <s>     ::= [CONNECTOR] <noun> SUBJECT <verb> <tense> PERIOD 
@@ -16,6 +13,9 @@ Keep it one rule until it starts to be different
 
 
 
+Recursive Descent Parsing requires each rule to have a unique start.
+Keep it one rule until it starts to be different.
+
 1  <story>         ::= <s> {<s>}  
 2  <s>             ::= [CONNECTOR] <noun> SUBJECT <after_subject>
 3  <after_subject> ::= <verb> <tense> PEROD | <noun> <after_noun>
@@ -26,3 +26,17 @@ Keep it one rule until it starts to be different
 8  <be>            ::= IS | WAS
 9  <tense>         ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
 
+
+
+#getEword# is called right after CONNECTOR, or <noun> or <verb>
+#gen# marks the places in <s> where generation of a line of the Internal Representation has to occur.
+
+1  <story>         ::= <s> {<s>}  
+2  <s> 			   ::= [CONNECTOR #getEword# #gen(“CONNECTOR”)#] <noun> #getEword# SUBJECT #gen(“ACTOR”)# <after subject>
+3  <after subject> ::= <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)# PEROD | <noun> #getEword# <after noun>
+4  <after_noun>    ::= <be> #gen(DESCRIPTION)# #gen(“TENSE”)# PERIOD | DESTINATION #gen(“TO”)# <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)# PERIOD | OBJECT #gen(“OBJECT”)# <after_object>
+5  <after_object>  ::= <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)# PERIOD | <noun> #getEword# DESTINATION #gen(“TO”)# <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)# PERIOD
+6  <noun>          ::= WORD1 | PRONOUN 
+7  <verb>          ::= WORD2
+8  <be>            ::= IS | WAS
+9  <tense>         ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
