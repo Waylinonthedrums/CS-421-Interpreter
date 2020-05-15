@@ -255,22 +255,18 @@ void tense()
 	{
 		case VERBPAST: //if case is VERBPAST
 			match(VERBPAST); //matches VERBPAST
-			gen("TENSE"); //
 			break;
 			
 		case VERBPASTNEG: //if case is VERBPASTNEG
 			match(VERBPASTNEG); //matches VERBPASTNEG
-			gen("TENSE"); //
 			break;
 			
 		case VERB: //if case is VERB
 			match(VERB); //matches VERB
-			gen("TENSE"); //
 			break;
 			
 		case VERBNEG: //if case is VERBNEG
 			match(VERBNEG); //matches VERBNEG
-			gen("TENSE"); // 
 			break;
 			
 		case ERROR: //if case is ERROR
@@ -292,12 +288,10 @@ void be()
 	{
 		case IS: //if case is "IS"
 			match(IS); //matches "IS"
-			gen("TENSE"); //
 			break;
 			
 		case WAS: //if case is WAS
 			match(WAS); //matches "WAS"
-			gen("TENSE"); //
 			break;
 			
 		case ERROR: //if case is ERROR
@@ -317,8 +311,6 @@ void verb()
 	{
 		case WORD2: //if case is WORD2
 			match(WORD2); //match WORD2
-			getEword(); //
-			gen("ACTION"); //
 			break;
 	
 		case ERROR: //if case is ERROR
@@ -336,12 +328,10 @@ void noun()
 	{
 		case WORD1: //if case is WORD1
 			match(WORD1); //matches WORD1
-			getEword(); //
 			break;
       
     	case PRONOUN: //if case is PRONOUN
 			match(PRONOUN); //matches PRONOUN
-			getEword(); //
 			break;
 				
 		case ERROR: //if case is ERROR
