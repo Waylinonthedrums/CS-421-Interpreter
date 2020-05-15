@@ -99,14 +99,14 @@ void story();//        	::= <s> {<s>}
 // ** Declare Lexicon (i.e. dictionary) that will hold the content of lexicon.txt
 // Make sure it is easy and fast to look up the translation.
 // Do not change the format or content of lexicon.txt 
-//  Done by: ** 
-struct DictionaryEntry {
+//  Done by: Waylin Owen and Vinh Pham
+struct DictionaryEntry {  // definition of dictionary entry
 	string japanese;
 	string english;
 };
-vector<DictionaryEntry> Dictionary;
-string saved_E_word;
-ofstream outFile;
+vector<DictionaryEntry> Dictionary; // japanese/english dictionary vector
+string saved_E_word; // english word to save in translated.txt file
+ofstream outFile; //stream for writing out to translated.txt
 
 // ** Additions to parser.cpp here:
 //    getEword() - using the current saved_lexeme, look up the English word
@@ -136,11 +136,11 @@ void gen(string line_type)
 {
 	if(line_type == "TENSE")
 	{
-		outFile << line_type << "  " << tokenName[saved_token] << endl;
+		outFile << line_type << ":  " << tokenName[saved_token] << endl;
 	}
 	else
 	{
-		outFile << line_type << "  " << saved_E_word << endl;
+		outFile << line_type << ":  " << saved_E_word << endl;
 	}
 }//end gen function
 
@@ -157,7 +157,7 @@ void gen(string line_type)
 // ---------------- Driver ---------------------------
 
 // The final test driver to start the translator
-// Done by:  Waylin
+// Done by:  Waylin Owen
 int main()
 {
 	ifstream finLex;//stream for reading from lexicon.txt
@@ -165,18 +165,15 @@ int main()
 	while (true) 
 	{
 		string str;
-		DictionaryEntry E;
+		DictionaryEntry E;//Dictionary entry to be added 
 		finLex >> str;
-		E.japanese = str;
+		E.japanese = str;//Entry japanese word
 		finLex >> str;
-		E.english = str;
-		if(finLex.eof()) break;
-		Dictionary.push_back(E);
+		E.english = str;//Entry english word
+		if(finLex.eof()) break;//reached the end of file
+		Dictionary.push_back(E);//put the entry into the dictionary
 	}
 	finLex.close();//** closes lexicon.txt 
-	
-	//for (int i = 0; i < Dictionary.size(); i++)// USAGE DEMO, DELETE THIS
-	//	cout << "japanese " << Dictionary[i].japanese << " english " << Dictionary[i].english << endl;// USAGE DEMO, DELETE THIS
 
 	outFile.open ("translated.txt");//** opens the output file translated.txt
 
@@ -282,8 +279,6 @@ void be()
 {
 	cout<<"Processing <be>"<<endl;
 	
-	gen("DESCRIPTION"); //
-	
 	switch(next_token())
 	{
 		case IS: //if case is "IS"
@@ -352,7 +347,7 @@ void after_object()
 	{
 		case WORD2: //if case is WORD2
 			verb();
-			getEWord();
+			getEword();
 			gen("ACTION");
 			tense();
 			gen("TENSE");
@@ -361,11 +356,11 @@ void after_object()
 			
 		case WORD1: //if case is WORD1
 			noun();
-			getEWord();
+			getEword();
 			match(DESTINATION); //matches DESTINATION
 			gen("TO");
 			verb();
-			getEWord();
+			getEword();
 			gen("ACTION");
 			tense();
 			gen("TENSE");
@@ -374,11 +369,11 @@ void after_object()
 			
 		case PRONOUN:
 			noun();
-			getEWord();
+			getEword();
 			match(DESTINATION); //matches DESTINATION
 			gen("TO");
 			verb();
-			getEWord();
+			getEword();
 			gen("ACTION");
 			tense();
 			gen("TENSE");
@@ -420,7 +415,7 @@ void after_noun()
 			match(DESTINATION); //matches DESTINATION
 			gen("TO");
 			verb();
-			getEWord();
+			getEword();
 			gen("ACTION");
 			tense();
 			gen("TENSE");
@@ -459,13 +454,13 @@ void after_subject()
         
         case WORD1: //if case is WORD1
 			noun();
-		    	getEWord();
+		    	getEword();
 			after_noun();
 			break;
 		  
         case PRONOUN: //if case is PRONOUN
 			noun();
-		    	getEWord();
+		    	getEword();
 			after_noun();
 			break;
 		
@@ -492,16 +487,17 @@ void s()
 	if(saved_token == CONNECTOR) // optional CONNECTOR
 		{
 		match(CONNECTOR); //matches CONNECTOR
-		getEWord();
+		getEword();
 		gen("CONNECTOR");
 		}
 	noun();
-	getEWord();
+	getEword();
 	if(saved_token == ERROR) // checks if we got ERROR in noun() before matching subject
 		return;
 	match(SUBJECT); //matches SUBJECT
 	gen("ACTOR");
 	after_subject();
+	outFile << endl;
 }
 
 // <story> ::= <s> {<s>} 
