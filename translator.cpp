@@ -433,6 +433,7 @@ void after_noun()
 			getEWord();
 			gen("ACTION");
 			tense();
+			gen("TENSE");
 			match(PERIOD); //matches PERIOD
 			break;
 		
